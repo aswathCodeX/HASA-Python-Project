@@ -1,0 +1,69 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object main.py
+object discharge_data.py
+object gumbel_reduce.py
+object plot_discharge.py
+object gui.py
+object log.py
+object Necker.csv
+object gumbel.csv
+title Gui using python for extrapolation of hydrograph
+map main.py {
+
+ gumbel_distribution()
+ get_reduce_mean()
+ get_reduce_std()
+ verify_gumbel()
+}
+map gumbel_reduce.py {
+
+ gumbel_reduce()
+ }
+map plot_discharge.py {
+
+ plotting
+
+ mul()
+ gt()
+ lt()
+ plot_discharge()
+ gumbel_plotting()
+
+
+
+}
+map discharge_data.py {
+
+ discharge_data_handlier
+
+ get_discharge_data()
+ print_discharge_data()
+
+ sep,Discharge_data
+}
+map gui.py{
+
+ ourapp
+
+ call_estimator()
+ verify_value()
+ plot()
+
+ 
+}
+map log.py {
+
+start_logging()
+log_action()
+}
+ discharge_data.py-->main.py
+ gumbel_reduce.py-->main.py
+ plot_discharge.py-->main.py
+ log.py-->main.py
+ main.py-->gui.py
+ gumbel.csv-->gumbel_reduce.py
+ Necker.csv-->discharge_data.py
+
+@enduml
