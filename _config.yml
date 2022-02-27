@@ -1,5 +1,10 @@
 theme: minima
-title: Python for WRR Project
-author: 
-  name: Aswatha Narayana S
+title: Pyhon for WRR Project [HASA]
+author: Aswatha Narayana S
   email: aswatha.narayana94@gmail.com
+navbar-links:
+  About Me: "aboutme"
+  Resources:
+    - Beautiful Jekyll: "https://beautifuljekyll.com"
+    - Learn markdown: "https://www.markdowntutorial.com/"
+  Author's home: "https://deanattali.com"
