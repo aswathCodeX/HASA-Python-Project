@@ -1,1 +1,4 @@
-theme: minima
+theme: jekyll-theme-minima
+title: Python for WRR Project
+author: 
+  name: "Aswatha Narayana S"
