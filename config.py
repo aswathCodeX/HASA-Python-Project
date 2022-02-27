@@ -28,7 +28,7 @@ except ModuleNotFoundError as additional:
     print(additional)
 
 
-# User Input Path for Data
+# User Input files Path for Data
 
 # Discharge_data.csv file path
 discharge_data_path = os.path.abspath('') + '/Discharge-data' \

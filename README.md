@@ -1,325 +1,232 @@
-# GUI using python for extrapolation of a hydrograph
-##image
+# GUI using python for extrapolation of a Hydrograph
+
+![Ganges](RiverGanges.png)
+*<sub>The Ganga River in the Himalayas (source: ---).</sub>*
+
 ***
-```
-Background: Gumbel distribution is used to model the maximum or minimum of samples of various distribution.
+
+> ***Background***: Gumbel distribution is used to model the maximum or minimum of samples of various distribution.
 Gumbel distribution predicts the chances of an extreme events like floods, earthquakes and other natural calamity.
 The ability of the Gumbel distribution to represent the maxima can be used to predict future discharges in a river.
+
+> ***Goal***: To predict 50, 100, 150, 200 and 1000 year flood discharge using Gumbel distribution and showcasing the results in a GUI
+
+GitHub Repository URL
 ```
-```
-Goal: To predict 50, 100, 150, 200 and 1000 year flood discharge using Gumbel distribution and showcasing the results in a GUI
-```
-Link to clone the project repository
+https://github.com/aswathCodeX/HASA-Python-Project.git
 ```
 
-```
 ## Theory
 ### Gumbel Distribution
 The Gumbel distribution is named after [Emil Julius Gumbel](https://en.wikipedia.org/wiki/Emil_Julius_Gumbel). Gumbel distribution is a special case of [generalized extreme value distribution](https://en.wikipedia.org/wiki/Generalized_extreme_value_distribution).
 
 The gumbel distribution formula is 
      
-Q = Qm.(1+K.Cv) 
-
+*Q = Q<sub>m</sub>.(1+K.C<sub>v</sub>)*
+<br>
 where
-* Q = Probable discharge with a return period of T years
+* *Q* = Probable discharge with a return period of T years
 
-* T = 50,100,150,200,1000 years
+* *T* = 50, 100, 150, 200, 500, 1000 years
 
-* Qm = Mean discharge
+* *Q<sub>m</sub>* = Mean discharge
 
-* K = Frequency factor 
-    * K = (Yt - Yn) / Sd
-    * Yt = -lnln (T/T-1) 
-    * Yn = Expected Reduce mean of the gumbel distribution
-    * Sd = Expected Reduce standard deviation of gumbel distribution
+* *K* = Frequency factor 
+    * *K = (Y<sub>t</sub> - Y<sub>n</sub>) / S<sub>d</sub>*
+    * *Y<sub>t</sub> = -ln (ln(T / T-1)*  <img src="https://render.githubusercontent.com/render/math?math=-ln\left( ln\left( \frac{T}{T-1} \right)\right)">
+    * *Y<sub>n</sub>* = Expected Reduce mean of the gumbel distribution
+    * *S<sub>d</sub>* = Expected Reduce standard deviation of gumbel distribution
 
-* Cv = Coefficient of variation
 
-     * Cv = Sd / Qm
+* *C<sub>v</sub>* = Coefficient of variation
+
+     * *C<sub>v</sub> = S<sub>d</sub> / Q<sub>m</sub>*
 
 In order to determine the value of K, from the gumbel reduce table Yn and Sd needs to be extracted
-##Data 
-### Gumbel reduce table
-In the gumbel reduce table possible values of Expected mean and Expected standard deviation is given with respect to the Number of data available.
 
-Data is continuous from 10 number of data to 100.
-After 100, 150 and 200 number of data is provided in the table. The reduce data is available in ```.csv``` format
+## Data 
+
+### Gumbel reduce table
+
+In the gumbel reduce table possible values of Expected ***mean*** and Expected ***standard deviation*** is given with respect to the amount of data available.
+
+The gumbel reduce data referred to is continuous from the ***10 to 100*** years.
+After this, data for ***150 and 200*** years is provided respectively in the table. The reduced data is available in ```.csv``` format
 
 | Number of data | Reduce mean | Reduce std |
 |----------------|:------------|-----------:|
-|         10       |    0.4952         |      0.9497       |
-11|0.4996|0.9676
-12|0.5035|0.9833
-... |...|...
-100|0.56|1.2065
-150|0.5646|1.2253
-200|0.5672|1.236
-###Hydrological data
+| 10             | 0.4952      |     0.9497 |
+| 11             | 0.4996      |     0.9676 |
+| 12             | 0.5035      |     0.9833 |
+| ...            | ...         |        ... |
+| 100            | 0.56        |     1.2065 |
+| 150            | 0.5646      |     1.2253 |
+| 200            | 0.5672      |      1.236 |
 
-Hydrological data is extracted from River Necker using the [Website](https://udo.lubw.baden-wuerttemberg.de/public/q/3MD4H4f2pqsu7JaXsrmIRA)
-Hydrological data is from Obendorf 409 station in Necker.
+### Hydrological data
 
-Data is available in ```.csv``` format
+We have considered Hydrological data for River *Neckar* using the [LUBW Geo-Portal](https://udo.lubw.baden-wuerttemberg.de/public/q/3MD4H4f2pqsu7JaXsrmIRA)
+Hydrological data is from ***Obendorf Neckar*** station measuring point ***409*** in Neckar.
 
-| YYYY-MM-DD | Q (m3/s) |
-|------------|:------------|
-|         01-11-1929      |   4.086        | 
-| 02-11-1929     |6.326|
-|...|...|
-|31-12-2021| 11.79|
+Data is available in `.csv` format
 
-#Code
-##Framework
-Various functions and classes are created in accordance with the following flowchart
-## flowchart
+| DD-MM-YYYY | Q (m<sup>3</sup>/s) |
+|------------|:--------------------|
+| 01-11-1929 | 4.086               | 
+| 02-11-1929 | 6.326               |
+| ...        | ...                 |
+| 31-12-2021 | 11.79               |
+
+# Code-Description
+
+## Framework
+Functions and  Custom Classes were created as mentioned in following UML Diagram
+
+![UML Diagram](UML_Diagram.png)
+
+### Brief Overview of the Components
 
 * ```main.py``` contains 4 functions- ```verify_gumbel()```,```get_reduce_mean()```,```get_reduce_std()```, ```gumbel_distribution()```
-* ```Discharge_data.py```contains a class ```Discharge_data_handler```. the class contains 3 methods
-* ```plot_discharge.py```contains a class ```plotting```. the class contains 2 methods and 3 magic methods
+* ```discharge_data.py```contains a custom class ```DischargeDataHandler```. This class contains 2 methods and a Magic method
+* ```plot_discharge.py```contains a custom class ```PlotDischarge```. This class contains 2 methods and 4 Magic methods
 * ```gui.py```
-* ```config.py```contains all the packages and modules and path that is required in the project
-* ```fun.py```contains logging functions
-* ```gumbel_reduce.py```contains ```gumbel_reduce()```
+* ```config.py```required packages and modules are imported and the input file paths that are required for the project
+* ```log.py```contains logging configuration and initiates the logger
+* ```gumbel_reduce.py```contains ```gumbel_reduce()``` function
 
-###Extracting hydrological and gumbel reduce data
+## Extracting hydrological and gumbel reduce data
 
-```necker-data.csv``` contains discharge data from 1929 to 2021, separated by ```,```
+```river_discharge_data.csv``` is the input discharge data file that should discharge data. Currently, the Neckar River data used as input is available from the years 1929 to 2021, separated by ```;```
 
-In ```discharge_data.py``` disacharge_data_handler class and ```get_discharge_data``` and ```print_discharge_data``` method is present
+>  Please use this specified format to input different data. Date: `DD-MM-YYY` and Discharge: Q in (m<sup>3</sup>/s)
+
+### discharge_data.py
+
+This file consists of `DisachargeDataHandler`class which has Methods for handling and printing the Discharge Data, Extracting data from user inputted ".csv" file as an argument `data_csv_file` and sorting the data.
 
 
-``` 
-class Discharge_data_handler:    
-    def __init__(self):
-        self.sep = ';'
-        self.Discharge_data = pd.DataFrame
+### `get_discharge_data()` 
 
-    def get_Discharge_data(self,csv):
-        self.Discharge_data = pd.read_csv(csv, header=10,
-                                          names=['Date', 'Discharge'],
-                                          sep=self.sep,
-                                          usecols=[0, 1], parse_dates=[0], index_col='Date')
-        annual_max = self.Discharge_data.resample(rule='A', kind='period').max()
-        annual_max["year"] = annual_max.index.year
-        annual_max.reset_index(inplace=True, drop=True)
-        return annual_max
+method sorts the data using pandas DataFrame and resampled to annual maxima using `resample(rule='A', kind='period').max()`
+Each year is indexed and returned as pandas DataFrame, which includes `Discharge [CMS]` and `Year` columns with maximum annual discharge values in the ```Discharge [CMS]``` column. 
 
-```
-get_discharge_data method takes an argument```csv```which is the path for the discharge data.
-Data is sorted using pandas data frame and resampled to annual maxima using ```resample(rule='A', kind='period').max()```
-Each year is indexed and the method returns pandas dataframe, which includes ```Discharge``` and ```year``` column with maximum annual discharge in the ```Discharge``` column. 
-To print the sorted pandas dataframe print_Discharge_data method is used
-```
-    def print_Discharge_data(self):
-        print(self.Discharge_data)
-```
+### `print_discharge_data()`
+
+To print the sorted pandas dataframe this method is used.
+
 ***
-```gumbel.csv```contains gumbel reduce values separated by ```,``` for 10 to 200 number of datas.
-It contains 3 columns ```Data number```, ```Reduce mean```,``` Reduce std```.
-In ```gumbel_reduce.py``` ,``` gumbel_reduce()``` function is present.
-```
-def Gumbel_reduce(csv_file=''):
-    Data = pd.read_csv(csv_file,header=0,
-                       sep=',',
-                       names = ['Number of Data', 'Reduce mean', 'Reduce std'],
-                       usecols = [0, 1, 2],
-                       index_col = 'Number of Data')
-    return Data
-```
-```gumbel_reduce``` function takes an argument ```csv_file``` which is the path for the gumbel reduce data.
-pandas dataframe is used to sort the data into 3 columns and assigned index column to the ```Number of Data```.
-###Plotting
-In plot_discharge.py one class ```plotting``` and 5 method is present.
-Among the methods 3 are magic methods.
+### gumbel_reduce.py
 
-Application of plotting class is to plot the hydrograph for the Necker data and the exptrapolated discharges for 50, 100, 150,200,1000 years.
+###`gumbel_reduce()`
 
-method ```plot_discharge``` and 3 magic methods are linked to plotting the hydrograph for the Necker data. 
-```
+function takes an argument `csv_file` which is the file path for the gumbel reduce data.
+pandas DataFrame is used to sort the data into 3 columns and assign index column to the `Data Index`
 
-class plotting:
-        def __init__(self):
-                self.t = pd.Series
-                self.q = pd.Series
-                self.T = np.array
-                self.Q = np.array
-                self.c = str
-                self.s = 10
-        def __mul__(self, multiplier):
-                self.s *= multiplier
-                return self.s
+### plot_discharge.py
 
-        def __gt__(self,value):
-                 if self.s > value:
-                         print('The Hydrograph scatter points are too big')
+This script contains a custom  class `PlotDischarge` and 6 methods.
+Among the methods 4 are magic methods including `__init__`
 
-        def  __lt__(self,value):
-                 if self.s < value:
-                         print('The Hydrograph scatter points are too small')
+Aim of the `PlotDischarge` class is to plot the hydrograph for the River Discharge data (Neckar) and the extrapolated discharges for 50, 100, 150, 200, 500, 1000 years.
 
-        def plot_discharge(self, time_series=pd.Series(), q_series=pd.Series(), title="",color=""):
-                self.t = time_series
-                self.q = q_series
-                self.c = color
-                fig, axes = plt.subplots(figsize=(20,10))
-                axes.scatter(x=self.t, y=self.q,marker='o', s=self.s, color=self.c)
-                axes.set(xlabel="Year", ylabel="Discharge (CMS)", title=title)
-                plt.xlim(self.t.min(),self.t.max())
-                plt.grid()
-                plt.show()
-```
-method ```plot_discharge() ```takes 4 arguments ```time series```,``` q_series```, ```title``` and ```color```.
+### `plot_discharge()`
 
-```time series``` and ```q_series``` has to be pandas dataframe. ```color``` and ```title``` should be string.
+Method takes 4 arguments `time_series`, `q_series`, `title` and `color`
 
-```plot_discharge``` is generating a scatter plot for all the hydrological data. the flexibility on the size of the scatter points are controlled by ```__mul__()```,```__gt__()``` and ```__lt__()```. ```__mul_()```multiplies the scatter plot size by a factor of 10 while ```__lt__()``` warns the user if the scatter points are too small to discern by generating a print statement ```The Hydrograph scatter points are too small```  and ```__gt__()``` warns the user that scatter points are too large and might overlap and generates a print statement ```The Hydrograph scatter points are too big```.
+`time_series` and `q_series` have to be pandas DataFrames. `color` and `title` should be strings.
 
-```__mul__()``` method can be accessed by ```*```,```__gt__()``` can accessed by ```>```,```__lt__()``` can be accessed by ```<```. 
-***
-```gumbel_plotting()```method takes 4 arguments ```t_series```, ```q_series```, ```title``` and ```color```. The method generates a line graph for the extrapolated values.
+`plot_discharge()` is generating a scatter plot for the annual_max hydrological data. The flexibility on the size of the scatter points are controlled by the **magic methods** `__mul__()`, `__gt__()` and `__lt__()`. 
 
-```t_series```and ```q_series``` should be numpy array
+###`__mul_()` 
+Magic method multiplies the scatter points size by a factor of 10. `__mul__()` method can be accessed by `*` operator
 
 
-```
-def Gumbel_plotting(self, t_series, q_series, title='', save='',color=''):
-                self.T = t_series
-                self.Q = q_series
-                fig, axes = plt.subplots(figsize=(20, 10))
-                axes.plot(self.T, self.Q,linestyle="-",label='Extrapolation',marker="x",color=color)
-                axes.legend()
-                axes.set(xlabel= "Flood return period",ylabel="Discharge (CMS)", title=title)
-                axes.set_xlim((0,1000))
-                axes.set_ylim((0,400))
-                plt.grid()
-                plt.show()
-   ```
-###Main script
-In the main script ```verify_gumbel()```, ```get_reduce_mean()```, ```get_reduce_std()``` and ```gumbel_distribution()``` functions are present.
+###`__gt__()` 
+Magic Method warns the user that scatter points are too large and might overlap and generates a print statement *The Hydrograph scatter points are too big*. `__gt__()` can be accessed by `>`
 
-```get_reduce_mean()```takes an argument and index the ```gumbel.csv``` file to extract the reduce mean.
+###`__lt__()` 
+Magic method warns the user if the scatter points are too small to discern by generating a WARNING msg *The Hydrograph scatter points are too large*. `__lt__()` can be accessed by `<` 
+
+
+###`gumbel_plotting()`
+Method takes 4 arguments `t_series`, `q_series` which are numpy arrays and `title` and `color`. The method generates a line graph for the extrapolated discharge values.
+
+### main.py
+In the main script `verify_gumbel()`, `get_reduce_mean()`, `get_reduce_std()` and `gumbel_distribution()` functions are present.
+
+###`get_reduce_mean()` 
+Function takes an argument and index the `gumbel.csv` file to extract the reduced mean.
 
 The argument is the number of years of hydrological data available.
-```
-def get_reduce_mean(index):
-    if index in range(100,150):
-        index = 150
-    elif index in range(150,200):
-        index = 200
-    value =Gumbel_reduce(csv_file=gumbel_reduce_path)
-    return value['Reduce mean'][index]
-```
-```get_reduce_std()```takes an argument and index the ```gumbel.csv``` file to extract the reduce standard deviation.
+
+###`get_reduce_std()`
+takes an argument and index the `gumbel.csv` file to extract to reduce standard deviation.
 
 The argument is the number of years of hydrological data available
-```
-def get_reduce_std(index):
-    if index in range(100,150):
-        index = 150
-    elif index in range(150,200):
-        index = 200
-    value = Gumbel_reduce(csv_file=gumbel_reduce_path)
-    return value['Reduce std'][index]
-```
-If the number of years of hydrological data that is available is greater than 100 years and less than 150 years, reduce mean and standard of 150 year will be considered. For greater than 150 years data, 200 year value will be taken into account.
-***
-```gumbel_distribution()``` calculates the extrapolated discharges for 50,100,150,200 and 1000 years using gumbel distribution and provide a list with discharge values.
-```
- def Gumbel_distribution(Discharge_data):
-    number_of_years= Discharge_data.shape[0]
-    mean_discharge = Discharge_data['Discharge'].mean()
-    std_dev = Discharge_data['Discharge'].std()
-    reduce_mean = get_reduce_mean(number_of_years)
-    reduce_std =  get_reduce_std(number_of_years)
-    time_list = [50,100,150,200,500,1000]
-    main_discharge = []
-    for year in time_list:
-        P = math.log(year / (year - 1))
-        reduced_variate = -math.log(P)
-        Frequency_factor = (reduced_variate - reduce_mean) / reduce_std
-        Discharge_value = mean_discharge + Frequency_factor * std_dev
-        main_discharge.append(Discharge_value)
-    return main_discharge
-```
-In ```gumbel_distribution()```statistical pandas dataframe methods ```shape()```,```mean()```,```std()```. are used to get the discharge data size, mean and standard deviation.
 
-```get_reduce_mean()``` and ```get_reduce_std()``` are called to determine the reduce mean and reduce standard deviation.
+If the number of years of hydrological data that is available is greater than 100 years and less than 150 years, reduce mean and standard deviation of 150 year will be considered. For greater than 150 years data, 200 year value will be taken into account. As the table doesn't contain  statistical parameters for values above this range, User will be warned _**(limitation of the code in it's current state)**_. 
 
-Inside the ```for``` loop all the anticipated parameters of the gumbel distribution is calculated and extrapolated discharge is append to an empty list.
-***
-```verify_gumbel()``` is a wrapper function which wrap the ```get_reduce_mean()``` and ```get_reduce_std()```function to make sure that the indexing value is within the limits of the gumbel reduce data provided in the file ```gumbel.csv```. Otherwise the function prints an error statement.
-```
- def verify_Gumbel(func):
-    def wrapper(args):
-        try:
-            result = func(args)
-            print('No of years are within the gumbel reduce limit')
-            return result
-        except TypeError:
-            print('ERROR: To extract reduce value numeric value is to be passed')
-            return 0.0
-        except ValueError:
-            print('ERROR: To extract reduce value years should be in limit')
-            return 0.0
-    return wrapper
-```
-```discharge_data_handler``` class is instantiated and ```get_discharge_data()``` is called to retrieve and sort the discharge data.
-```
-Raw_Discharge_data = Discharge_data_handler()
-data = Raw_Discharge_data.get_Discharge_data(csv=Discharge_data_path)
-```
-Discharge data is put as an argument in the```gumbel_distribution()```function and the output is list.
-```
-output_list=Gumbel_distribution(data)
-```
-```plotting``` class is instantiated, magic methods are exercised and hydrograph is plotted using ```plot_discharge()``` method.
-```
-plote=plotting()
-plote * 15
-plote > 150
-plote < 5
-plote.plot_discharge(data['year'],data['Discharge'],title='Hydrograph',color='grey')
-```
-Extrapolated discharges are plotted using ```gumbel_plotting()```method.
+###`gumbel_distribution()` 
+Function calculates the extrapolated discharges for 50, 100, 150, 200, 500 and 1000 years using gumbel distribution and provide a list with discharge values.
 
-```
-time_list = [50,100,150,200,500,1000]
-x=np.array(time_list)
-y=np.array(output_list)
-plote.Gumbel_plotting(x,y,title='Gumbel Extrapolation',color='black')
-```
-A dictionary is generated containing the years and the extrapolated discharge values.
-```
-Main_dict = {}
-for index,time in enumerate(time_list):
-    Main_dict[time]=output_list[index]
-print(Main_dict)
-```
-###GUI
+The inbuilt pandas library statistical methods `shape()`, `mean()`, `std()` are used to get the discharge data size, mean and standard deviation.
 
-###logging function
+`get_reduce_mean()` and `get_reduce_std()` are called to determine the reduced mean and reduced standard deviation.
 
-###config
-In the ```config.py```script, all the libraries and packages are imported and paths of the reduce dataset and discharge data is defined.
-```
-try :
+Inside the `for` loop all the anticipated parameters of the Gumbel Distribution are calculated and extrapolated discharge is appended to an empty list.
+
+###`verify_gumbel()` 
+
+Function is a wrapper function which wraps the `get_reduce_mean()` and `get_reduce_std()` functions to make sure that the indexing value is within the limits of the Gumbel Reduce Data provided in the file `gumbel.csv`. Otherwise, the function shows an Error.
+
+### `main()`
+
+`DischargeDataHandler` class is instantiated and `get_discharge_data()` is called to retrieve and sort the discharge data.
+
+Discharge data is put as an argument in the `gumbel_distribution()` function and the output is list.
+
+`PlotDischarge` class is instantiated, Magic methods are exercised and the Hydrograph is plotted using the `plot_discharge()` method.
+
+Extrapolated discharges are plotted using `gumbel_plotting()` method.
+
+A dictionary is generated containing the years as `keys` and the extrapolated discharges as `values`.
+
+### GUI
+
+?????????????????
+
+### log.py
+
+The file starts the logger and set up its StreamHandler. Log configurations are also set up.
+
+
+### config.py
+This script contains all the necessary imports statements of libraries and packages.
+```python
+# necessary basic python libraries
     import logging
     import os
+    import math
+    
+# global python libraries used
+    
     import numpy as np
     import pandas as pd
-    import math
     import matplotlib.pyplot as plt
-    import matplotlib.cm as cm
-    from tkinter import *
+    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
     import tkinter as tk
-    from tkinter.messagebox import showinfo
     from tkinter import ttk
     from tkinter.messagebox import showinfo, showerror
-except ModuleNotFoundError as e:
-    print('ModuleNotFoundError: Missing basic libraries and packages')
-    print(e)
-
-Discharge_data_path= os.path.abspath('')+ '\Discharge-data/Neckar-data.csv'
-gumbel_reduce_path= os.path.abspath('')+'\gumbel_reduced/gumbel.csv'
 ```
+> If the above packages are not install on the host computer, please do so to run the code without any hassle.
+
+```python
+# Discharge_data.csv file path
+discharge_data_path = os.path.abspath('') + '/Discharge-data/river_discharge_data.csv '
+```
+> Please specify the discharge data file path here 
+```python
+# gumbel_reduce_data.csv file path
+gumbel_reduce_path = os.path.abspath('') + '/gumbel_reduced/gumbel.csv'
+```
+
