@@ -19,8 +19,12 @@ try:
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
     import tkinter as tk
-    from tkinter import ttk
-    from tkinter.messagebox import showinfo, showerror
+    from tkinter import ttk  # for Combobox widget
+
+    # to select files or folders
+    from tkinter.filedialog import askopenfilename, askdirectory
+    from tkinter.messagebox import askokcancel, showinfo  # infoboxes
+    from tkinter.messagebox import showerror
 except ModuleNotFoundError as additional:
     print(
         'ModuleNotFoundError: Missing global packages (required: numpy, '
@@ -31,8 +35,15 @@ except ModuleNotFoundError as additional:
 # User Input files Path for Data
 
 # Discharge_data.csv file path
-discharge_data_path = os.path.abspath('') + '/Discharge-data' \
-                                            '/river_discharge_data.csv '
+# Specify the path of the Discharge data in GUI
 
 # gumbel_reduce_data.csv file path
 gumbel_reduce_path = os.path.abspath('') + '/gumbel_reduced/gumbel.csv'
+
+# Disable (False) or enable (True) plot
+plot_gumbel = True
+
+try:
+    os.path.isfile(gumbel_reduce_path)
+except FileNotFoundError:
+    logging.error('ERROR: Gumbel Reduce file is missing')

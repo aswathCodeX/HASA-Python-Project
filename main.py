@@ -85,10 +85,15 @@ def gumbel_distribution(discharge_data):
     return main_discharge
 
 
-def main():
+def main(d_data, scatter_size=0.0):
+    """
+
+    :param d_data: raw discharge data file
+    :param scatter_size: Specifying the scatter size for Magic Methods
+    :return: results as a Dictionary
+    """
     # instantiation of the DischargeDataHandler Class
-    raw_discharge_data = DischargeDataHandler(
-        data_csv_file=discharge_data_path)
+    raw_discharge_data = DischargeDataHandler(data_csv_file=d_data)
 
     # calling method to get discharge data
     data = raw_discharge_data.get_discharge_data()
@@ -101,62 +106,22 @@ def main():
     plotter = PlotDischarge()
 
     # Flexibilizing the Scatter size using Magic Methods
-    plotter * 10
+
+    plotter * scatter_size
     plotter > 150
     plotter < 5
-
-    # Plotting the Hydrograph
-    plotter.plot_discharge(data['Year'], data['Discharge [CMS]'],
-                           title='Hydrograph', color='grey')
 
     # changing the extrapolated discharge plotting arguments to numpy
     t_series = np.array(time_list)
     q_series = np.array(output_list)
-    # plotting the extrapolated discharge
-    plotter.gumbel_plotting(t_series, q_series, title='Gumbel Extrapolation',
-                            color='black')
+
     # appending extrapolated discharges to a dict
     flood_discharge_dict = {}
     for index, time in enumerate(time_list):
         flood_discharge_dict[time] = output_list[index]
-    logging.info(flood_discharge_dict)
 
+    # returning all the values as a dictionary
+    results = {"return_periods": flood_discharge_dict, "t_series": t_series,
+               "q_series": q_series, "d_data": data, "obj": plotter}
 
-if __name__ == '__main__':
-    main()
-
-
-# # instantiation of the DischargeDataHandler Class
-# raw_discharge_data = DischargeDataHandler(
-#     data_csv_file=discharge_data_path)
-#
-# # calling method to get discharge data
-# data = raw_discharge_data.get_discharge_data()
-# logging.info("\nThe Annual Maximum Discharge Data is: \n{}".format(data))
-#
-# # function call to estimate extrapolated discharges
-# output_list = gumbel_distribution(data)
-#
-# # instantiation of the PlotDischarge Class
-# plotter = PlotDischarge()
-#
-# # Flexibilizing the Scatter size using Magic Methods
-# plotter * 100
-# plotter > 150
-# plotter < 5
-#
-# # Plotting the Hydrograph
-# plotter.plot_discharge(data['Year'], data['Discharge [CMS]'],
-#                        title='Hydrograph', color='grey')
-#
-# # changing the extrapolated discharge plotting arguments to numpy
-# t_series = np.array(time_list)
-# q_series = np.array(output_list)
-# # plotting the extrapolated discharge
-# plotter.gumbel_plotting(t_series, q_series, title='Gumbel Extrapolation',
-#                         color='black')
-# # appending extrapolated discharges to a dict
-# flood_discharge_dict = {}
-# for index, time in enumerate(time_list):
-#     flood_discharge_dict[time] = output_list[index]
-# logging.info(flood_discharge_dict)
+    return results

@@ -82,7 +82,7 @@ class PlotDischarge:
         self.c = color
         fig, axes = plt.subplots(figsize=(10, 6))
         axes.scatter(x=self.t, y=self.q, marker='o', s=self.s, color=self.c)
-        axes.set(xlabel="Year", ylabel="Discharge [CMS]", title=title)
+        axes.set(xlabel="Years", ylabel="Discharge [CMS]", title=title)
         plt.xlim(self.t.min(), self.t.max())
         plt.grid()
         plt.show()
@@ -98,13 +98,14 @@ class PlotDischarge:
         """
         self.T = t_series
         self.Q = q_series
-        fig, axes = plt.subplots(figsize=(20, 10))
+        fig, axes = plt.subplots(figsize=(10, 6))
         axes.plot(self.T, self.Q, linestyle="-", label='Extrapolation',
                   marker="x", color=color)
         axes.legend()
-        axes.set(xlabel="Flood return period", ylabel="Discharge [CMS]",
+        axes.set(xlabel="Flood return periods [years]", ylabel="Discharge [CMS]",
                  title=title)
         axes.set_xlim((0, 1000))
         axes.set_ylim((0, 400))
+        axes.autoscale()
         plt.grid()
         plt.show()
