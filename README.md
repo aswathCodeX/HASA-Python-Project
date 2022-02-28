@@ -1,6 +1,6 @@
 # GUI using python for extrapolation of a Hydrograph
 
-![Ganges](images/RiverBrahmaputra.png)
+![Brahmaputra](images/RiverBrahmaputra.png)
 *<sub>The Brahmaputra River in Majuli island, Assam, India (source: Akash Jyoti Handique 2019).</sub>*
 
 ***
