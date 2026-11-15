@@ -1,5 +1,11 @@
 # GUI using python for extrapolation of a Hydrograph
 
+> **Project status (November 2026):** HASA is being revived as an open-source flood frequency
+> tool. The original 2022 course version is preserved as release
+> [`v1.0.0`](https://github.com/aswathCodeX/HASA-Python-Project/releases/tag/v1.0.0).
+> See [ROADMAP.md](ROADMAP.md) for the plan, [CHANGELOG.md](CHANGELOG.md) for changes and
+> [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute. The documentation below describes v1.0.0.
+
 ![Brahmaputra](images/RiverBrahmaputra.png)
 *<sub>The Brahmaputra River in Majuli island, Assam, India (source: Akash Jyoti Handique 2019).</sub>*
 
